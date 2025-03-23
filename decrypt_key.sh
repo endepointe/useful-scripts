@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function show_usage() {
-    echo "Usage:" $0 "<path_to_file_decrypt>" "<scheme>" "<ENV_VAR_NAME>"
+    echo "Usage:"source $0 "<path_to_file_decrypt>" "<scheme>" "<ENV_VAR_NAME>"
     echo "-----> scheme is most likely aes256."
     echo "----------> OR" $0 "--help or -h"
     return 0
