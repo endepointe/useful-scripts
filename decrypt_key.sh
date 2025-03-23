@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function show_usage() {
-    echo "Usage:" $0 "<path_to_file_decrypt>" "<scheme>"
+    echo "Usage:" $0 "<path_to_file_decrypt>" "<scheme>" "<ENV_VAR_NAME>"
     echo "-----> scheme is most likely aes256."
     echo "----------> OR" $0 "--help or -h"
     return 0
@@ -46,12 +46,12 @@ function help() {
 
 if [[ "$1" == "--help" || "$1" == "-h" ]]; then
     show_usage
-    exit
+    return 0
 fi
 
-if [[ $# -ne 2 ]]; then
+if [[ $# -ne 3 ]]; then
     show_usage
-    exit 1
+    return -1
 fi
 
 # If a file and encryption scheme, do the thing.
@@ -60,12 +60,12 @@ if [[ -f "$1" ]]; then
         echo "Valid.... Decrypting" $1 "with" $2 "scheme." 
         read -p "Enter key: " -s key
         #key=$(mask_password "Enter password: ")
-        export GAPIK=$(echo "$key" | openssl enc -pbkdf2 -$2 -d -in $1 -pass stdin)
+        export $3=$(echo "$key" | openssl enc -pbkdf2 -$2 -d -in $1 -pass stdin)
         echo
     fi
 else
     echo "ERROR: enter a valid file to decrypt" 
     show_usage
-    exit 1
+    return -1
 fi
 
